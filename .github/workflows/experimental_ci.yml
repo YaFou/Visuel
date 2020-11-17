@@ -1,0 +1,33 @@
+name: Experimental continuous integration
+on: [ push, pull_request ]
+
+jobs:
+    test:
+        name: 'Test (PHP ${{ matrix.php-version }} - OS ${{ matrix.os }} - Dependencies ${{ matrix.dependencies }})'
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version: [ '8.1' ]
+                os: [ ubuntu-latest, windows-latest, macos-latest ]
+                dependencies: [ lowest, highest ]
+        runs-on: ${{ matrix.os }}
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-version }}
+            -   name: Install dependencies (lowest)
+                if: matrix.dependencies == 'lowest'
+                run: composer update --prefer-lowest --ignore-platform-reqs
+            -   name: Install dependencies (highest)
+                if: matrix.dependencies == 'highest'
+                run: composer update --ignore-platform-reqs
+            -   name: Setup problem matchers for PHP
+                run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+            -   name: Setup problem matchers for PHPUnit
+                run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+            -   name: Run tests
+                run: vendor/bin/phpunit

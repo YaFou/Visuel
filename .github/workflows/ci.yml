@@ -1,0 +1,66 @@
+name: Continuous integration
+on: [ push, pull_request ]
+
+jobs:
+    test:
+        name: 'Test (PHP ${{ matrix.php-version }} - OS ${{ matrix.os }} - Dependencies ${{ matrix.dependencies }})'
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version: [ '7.2', '7.3', '7.4', '8.0' ]
+                os: [ ubuntu-latest, windows-latest, macos-latest ]
+                dependencies: [ lowest, highest ]
+        runs-on: ${{ matrix.os }}
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-version }}
+            -   name: Install dependencies (lowest)
+                if: matrix.dependencies == 'lowest'
+                run: composer update --prefer-lowest
+            -   name: Install dependencies (highest)
+                if: matrix.dependencies == 'highest'
+                run: composer update
+            -   name: Setup problem matchers for PHP
+                run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+            -   name: Setup problem matchers for PHPUnit
+                run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+            -   name: Run tests
+                run: vendor/bin/phpunit
+
+    hard-test:
+        name: Hard test
+        runs-on: ubuntu-latest
+        needs: [ test ]
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+            -   name: Install dependencies
+                run: composer update
+            -   name: Run tests
+                run: vendor/bin/phpunit --repeat 200
+
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+            -   name: Install dependencies
+                run: composer update
+            -   name: Lint
+                run: vendor/bin/phpcs
