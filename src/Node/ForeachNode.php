@@ -29,6 +29,35 @@ class ForeachNode implements NodeInterface
 
     public function compile(CompilerInterface $compiler): void
     {
-        // TODO: Implement compile() method.
+        if ($this->elseChildren) {
+            preg_match('/(.+)as/', $this->statement, $matches);
+
+            $compiler
+                ->writePhp('if (!empty(', trim($matches[1]), ')):')
+                ->indent()
+                ->newLine();
+        }
+
+        $compiler
+            ->writePhp('foreach (', $this->statement, '):')
+            ->indent()
+            ->newLine()
+            ->subCompile($this->children)
+            ->outdent()
+            ->newLine()
+            ->writePhp('endforeach;');
+
+        if ($this->elseChildren) {
+            $compiler
+                ->outdent()
+                ->newLine()
+                ->writePhp('else:')
+                ->indent()
+                ->newLine()
+                ->subCompile($this->elseChildren)
+                ->outdent()
+                ->newLine()
+                ->writePhp('endif;');
+        }
     }
 }

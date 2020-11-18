@@ -22,11 +22,8 @@ class CompilerTest extends TestCase
 
     private function assertSameCompiled(callable $compile, string $code): void
     {
-        $node = $this->createMock(NodeInterface::class);
-        $node->method('compile')->willReturnCallback($compile);
-
         $compiler = new Compiler();
-        $this->assertSame($code, $compiler->compile($node));
+        $this->assertSame($code, $compiler->compile($this->makeNode($compile)));
     }
 
     public function testWritePhp()
@@ -72,5 +69,22 @@ HTML;
                 ->newLine()
                 ->write('text5');
         }, $code);
+    }
+
+    public function testSubCompile()
+    {
+        $this->assertSameCompiled(function (CompilerInterface $compiler) {
+            $compiler->subCompile($this->makeNode(function (CompilerInterface $compiler) {
+                $compiler->write('text');
+            }));
+        }, 'text');
+    }
+
+    private function makeNode(callable $compile): NodeInterface
+    {
+        $node = $this->createMock(NodeInterface::class);
+        $node->method('compile')->willReturnCallback($compile);
+
+        return $node;
     }
 }

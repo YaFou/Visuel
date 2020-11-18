@@ -22,6 +22,8 @@ class Node implements NodeInterface
 
     public function compile(CompilerInterface $compiler): void
     {
-        // TODO: Implement compile() method.
+        foreach ($this->nodes as $node) {
+            $compiler->subCompile($node);
+        }
     }
 }

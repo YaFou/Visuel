@@ -10,4 +10,9 @@ class PrintNodeTest extends NodeTestCase
     {
         $this->assertSameCompiledCode(new PrintNode('statement'), '<?= htmlspecialchars(statement) ?>');
     }
+
+    public function testCompileAndTrim()
+    {
+        $this->assertSameCompiledCode(new PrintNode(' statement '), '<?= htmlspecialchars(statement) ?>');
+    }
 }

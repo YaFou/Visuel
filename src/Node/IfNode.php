@@ -37,7 +37,7 @@ class IfNode implements NodeInterface
             ->outdent()
             ->newLine();
 
-        if (null !== $this->nextNode) {
+        if ($this->nextNode) {
             $compiler->subCompile($this->nextNode);
         }
 

@@ -19,6 +19,6 @@ class PrintNode implements NodeInterface
 
     public function compile(CompilerInterface $compiler): void
     {
-        $compiler->write('<?= htmlspecialchars(', $this->statement, ') ?>');
+        $compiler->write('<?= htmlspecialchars(', trim($this->statement), ') ?>');
     }
 }
