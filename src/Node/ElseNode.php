@@ -2,6 +2,8 @@
 
 namespace YaFou\Visuel\Node;
 
+use YaFou\Visuel\CompilerInterface;
+
 class ElseNode implements NodeInterface
 {
 
@@ -10,8 +12,19 @@ class ElseNode implements NodeInterface
      */
     private $children;
 
-    public function __construct(Node $children)
+    public function __construct(NodeInterface $children)
     {
         $this->children = $children;
+    }
+
+    public function compile(CompilerInterface $compiler): void
+    {
+        $compiler
+            ->writePhp('else:')
+            ->indent()
+            ->newLine()
+            ->subCompile($this->children)
+            ->outdent()
+            ->newLine();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace YaFou\Visuel\Node;
 
+use YaFou\Visuel\CompilerInterface;
+
 class TextNode implements NodeInterface
 {
 
@@ -13,5 +15,10 @@ class TextNode implements NodeInterface
     public function __construct(string $text)
     {
         $this->text = $text;
+    }
+
+    public function compile(CompilerInterface $compiler): void
+    {
+        $compiler->write($this->text);
     }
 }

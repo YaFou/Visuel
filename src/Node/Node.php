@@ -2,6 +2,8 @@
 
 namespace YaFou\Visuel\Node;
 
+use YaFou\Visuel\CompilerInterface;
+
 class Node implements NodeInterface
 {
 
@@ -16,5 +18,10 @@ class Node implements NodeInterface
     public function __construct(array $nodes)
     {
         $this->nodes = $nodes;
+    }
+
+    public function compile(CompilerInterface $compiler): void
+    {
+        // TODO: Implement compile() method.
     }
 }

@@ -2,6 +2,8 @@
 
 namespace YaFou\Visuel\Node;
 
+use YaFou\Visuel\CompilerInterface;
+
 class ElseIfNode implements NodeInterface
 {
 
@@ -23,5 +25,20 @@ class ElseIfNode implements NodeInterface
         $this->condition = $condition;
         $this->children = $children;
         $this->nextNode = $nextNode;
+    }
+
+    public function compile(CompilerInterface $compiler): void
+    {
+        $compiler
+            ->writePhp('elseif(', $this->condition, '):')
+            ->indent()
+            ->newLine()
+            ->subCompile($this->children)
+            ->outdent()
+            ->newLine();
+
+        if (null !== $this->nextNode) {
+            $compiler->subCompile($this->nextNode);
+        }
     }
 }

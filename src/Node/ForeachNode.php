@@ -2,6 +2,8 @@
 
 namespace YaFou\Visuel\Node;
 
+use YaFou\Visuel\CompilerInterface;
+
 class ForeachNode implements NodeInterface
 {
 
@@ -23,5 +25,10 @@ class ForeachNode implements NodeInterface
         $this->statement = $statement;
         $this->children = $children;
         $this->elseChildren = $elseChildren;
+    }
+
+    public function compile(CompilerInterface $compiler): void
+    {
+        // TODO: Implement compile() method.
     }
 }

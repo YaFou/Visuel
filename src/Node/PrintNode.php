@@ -2,6 +2,8 @@
 
 namespace YaFou\Visuel\Node;
 
+use YaFou\Visuel\CompilerInterface;
+
 class PrintNode implements NodeInterface
 {
 
@@ -13,5 +15,10 @@ class PrintNode implements NodeInterface
     public function __construct(string $statement)
     {
         $this->statement = $statement;
+    }
+
+    public function compile(CompilerInterface $compiler): void
+    {
+        $compiler->write('<?= htmlspecialchars(', $this->statement, ') ?>');
     }
 }
