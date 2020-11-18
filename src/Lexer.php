@@ -200,12 +200,12 @@ class Lexer implements LexerInterface
             }
 
             if (
-            $this->makeTokenIfStringTested(
-                $this->options[$token],
-                $token,
-                Token::TEXT,
-                Token::ARGUMENTS_START === $token ? self::STATE_ARGUMENTS : self::STATE_PRINT
-            )
+                $this->makeTokenIfStringTested(
+                    $this->options[$token],
+                    $token,
+                    Token::TEXT,
+                    Token::ARGUMENTS_START === $token ? self::STATE_ARGUMENTS : self::STATE_PRINT
+                )
             ) {
                 return;
             }
@@ -298,7 +298,8 @@ class Lexer implements LexerInterface
     private function checkPhpSyntax(): void
     {
         try {
-            eval('return;' . $this->buffer . ';');
+//            eval('return;' . $this->buffer . ';');
+            token_get_all($this->buffer);
         } catch (ParseError $e) {
             $this->throwParseException($e->getMessage());
         }
@@ -329,12 +330,12 @@ class Lexer implements LexerInterface
         }
 
         if (
-        $this->makeTokenIfStringTested(
-            $this->options[Token::ARGUMENTS_END],
-            Token::ARGUMENTS_END,
-            Token::STATEMENT,
-            self::STATE_TEXT
-        )
+            $this->makeTokenIfStringTested(
+                $this->options[Token::ARGUMENTS_END],
+                Token::ARGUMENTS_END,
+                Token::STATEMENT,
+                self::STATE_TEXT
+            )
         ) {
             return;
         }
@@ -367,12 +368,12 @@ class Lexer implements LexerInterface
         }
 
         if (
-        $this->makeTokenIfStringTested(
-            $this->options[Token::PRINT_END],
-            Token::PRINT_END,
-            Token::STATEMENT,
-            self::STATE_TEXT
-        )
+            $this->makeTokenIfStringTested(
+                $this->options[Token::PRINT_END],
+                Token::PRINT_END,
+                Token::STATEMENT,
+                self::STATE_TEXT
+            )
         ) {
             return;
         }
