@@ -59,6 +59,9 @@ class ParserTest extends TestCase
         ], [new TextNode('arguments')]];
     }
 
+    /**
+     * @throws Exception
+     */
     public function testExpectedTokenException()
     {
         $this->expectException(ParseException::class);
@@ -66,6 +69,9 @@ class ParserTest extends TestCase
         $parser->parse(new TokenStream([new Token(Token::PRINT_START)]));
     }
 
+    /**
+     * @throws Exception
+     */
     public function testExpectedArgumentsException()
     {
         $this->expectException(ParseException::class);
@@ -78,6 +84,9 @@ class ParserTest extends TestCase
         $parser->parse(new TokenStream([new Token(Token::BLOCK, 'block')]));
     }
 
+    /**
+     * @throws Exception
+     */
     public function testExpectedBlockNotFoundException()
     {
         $this->expectException(ParseException::class);

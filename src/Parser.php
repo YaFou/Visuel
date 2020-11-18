@@ -5,6 +5,7 @@ namespace YaFou\Visuel;
 use Exception;
 use YaFou\Visuel\Block\AbstractBlock;
 use YaFou\Visuel\Block\ConditionBlock;
+use YaFou\Visuel\Block\ForeachBlock;
 use YaFou\Visuel\Exception\ParseException;
 use YaFou\Visuel\Node\Node;
 use YaFou\Visuel\Node\NodeInterface;
@@ -28,7 +29,8 @@ class Parser implements ParserInterface
     public function __construct(array $blocks = [])
     {
         $this->blocks = array_merge([
-            new ConditionBlock()
+            new ConditionBlock(),
+            new ForeachBlock()
         ], $blocks);
     }
 
