@@ -310,7 +310,13 @@ class Lexer implements LexerInterface
      */
     private function throwParseException(string $message): void
     {
-        throw new ParseException($message, $this->source->getName(), $this->line, $this->column);
+        throw new ParseException(sprintf(
+            'Syntax exception at "%s" line %d column %d: %s',
+            $this->source->getName(),
+            $this->line,
+            $this->column,
+            $message
+        ));
     }
 
     /**

@@ -26,4 +26,19 @@ class Token
         $this->type = $type;
         $this->value = $value;
     }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function isTypeOf(string $type): bool
+    {
+        return $this->type === $type;
+    }
 }
