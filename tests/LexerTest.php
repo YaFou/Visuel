@@ -5,7 +5,6 @@ namespace YaFou\Visuel\Tests;
 use Exception;
 use Generator;
 use PHPUnit\Framework\TestCase;
-use YaFou\Visuel\Exception\ParseException;
 use YaFou\Visuel\Lexer;
 use YaFou\Visuel\Source;
 use YaFou\Visuel\Token;
@@ -63,15 +62,5 @@ class LexerTest extends TestCase
             [Token::STATEMENT, '$arguments'],
             [Token::ARGUMENTS_END]
         ]];
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testSyntaxErrorOnStatement()
-    {
-        $this->expectException(ParseException::class);
-        $lexer = new Lexer();
-        $lexer->tokenize(new Source('name', '{{(}}'));
     }
 }

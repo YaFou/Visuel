@@ -5,7 +5,7 @@ namespace YaFou\Visuel\Cache;
 use InvalidArgumentException;
 use YaFou\Visuel\Source;
 
-class FilesystemCache implements CacheInterface
+class FilesystemCache extends AbstractCache
 {
 
     /**
@@ -21,13 +21,13 @@ class FilesystemCache implements CacheInterface
     public function get(Source $source): string
     {
         if (!$this->has($source)) {
-            throw new InvalidArgumentException(sprintf('The cache of "%s" does not exist', $name));
+            throw new InvalidArgumentException(sprintf('The cache of "%s" does not exist', $source->getName()));
         }
 
         $filename = $this->getFilename($source);
 
         if (!is_file($filename)) {
-            throw new InvalidArgumentException(sprintf('The cache of "%s" is not a file', $name));
+            throw new InvalidArgumentException(sprintf('The cache of "%s" is not a file', $source->getName()));
         }
 
         return file_get_contents($filename);
@@ -55,11 +55,12 @@ class FilesystemCache implements CacheInterface
 
     private function getFilename(Source $source): string
     {
-        return $this->directory . DIRECTORY_SEPARATOR . hash('sha256', $source->getName()) . '.php';
+        return $this->directory . DIRECTORY_SEPARATOR . $this->getKey($source) . '.php';
     }
 
     public function set(Source $source, string $code): void
     {
+        $this->initialize();
         file_put_contents($this->getFilename($source), $code);
     }
 }
