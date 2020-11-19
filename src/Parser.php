@@ -4,8 +4,11 @@ namespace YaFou\Visuel;
 
 use Exception;
 use YaFou\Visuel\Block\AbstractBlock;
+use YaFou\Visuel\Block\BreakBlock;
 use YaFou\Visuel\Block\ConditionBlock;
+use YaFou\Visuel\Block\ContinueBlock;
 use YaFou\Visuel\Block\ForeachBlock;
+use YaFou\Visuel\Block\SwitchBlock;
 use YaFou\Visuel\Exception\ParseException;
 use YaFou\Visuel\Node\Node;
 use YaFou\Visuel\Node\NodeInterface;
@@ -30,7 +33,10 @@ class Parser implements ParserInterface
     {
         $this->blocks = array_merge([
             new ConditionBlock(),
-            new ForeachBlock()
+            new ForeachBlock(),
+            new SwitchBlock(),
+            new BreakBlock(),
+            new ContinueBlock()
         ], $blocks);
     }
 
@@ -126,9 +132,7 @@ class Parser implements ParserInterface
     {
         $nodes = [];
 
-        while (null !== $this->stream->getToken()) {
-            $token = $this->stream->getToken();
-
+        while (null !== $token = $this->stream->getToken()) {
             if (Token::BLOCK === $token->getType() && in_array($token->getValue(), $names)) {
                 return new Node($nodes);
             }
