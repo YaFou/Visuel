@@ -32,10 +32,8 @@ class ElseIfNode implements NodeInterface
         $compiler
             ->writePhp('elseif(', $this->condition, '):')
             ->indent()
-            ->newLine()
             ->subCompile($this->children)
-            ->outdent()
-            ->newLine();
+            ->outdent();
 
         if ($this->nextNode) {
             $compiler->subCompile($this->nextNode);

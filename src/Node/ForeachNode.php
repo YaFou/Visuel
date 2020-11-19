@@ -34,29 +34,23 @@ class ForeachNode implements NodeInterface
 
             $compiler
                 ->writePhp('if (!empty(', trim($matches[1]), ')):')
-                ->indent()
-                ->newLine();
+                ->indent();
         }
 
         $compiler
             ->writePhp('foreach (', $this->statement, '):')
             ->indent()
-            ->newLine()
             ->subCompile($this->children)
             ->outdent()
-            ->newLine()
             ->writePhp('endforeach;');
 
         if ($this->elseChildren) {
             $compiler
                 ->outdent()
-                ->newLine()
                 ->writePhp('else:')
                 ->indent()
-                ->newLine()
                 ->subCompile($this->elseChildren)
                 ->outdent()
-                ->newLine()
                 ->writePhp('endif;');
         }
     }

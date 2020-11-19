@@ -55,18 +55,14 @@ HTML;
             $compiler
                 ->write('text1')
                 ->indent()
-                ->newLine()
                 ->write('text2')
                 ->newLine()
                 ->writePhp('php')
                 ->indent()
-                ->newLine()
                 ->write('text3')
                 ->outdent()
-                ->newLine()
                 ->write('text4')
                 ->outdent()
-                ->newLine()
                 ->write('text5');
         }, $code);
     }

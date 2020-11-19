@@ -47,7 +47,7 @@ class Compiler implements CompilerInterface
     {
         $this->indentation += 4;
 
-        return $this;
+        return $this->newLine();
     }
 
     public function outdent(): CompilerInterface
@@ -56,7 +56,7 @@ class Compiler implements CompilerInterface
             $this->indentation -= 4;
         }
 
-        return $this;
+        return $this->newLine();
     }
 
     public function newLine(): CompilerInterface

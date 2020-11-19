@@ -32,10 +32,8 @@ class IfNode implements NodeInterface
         $compiler
             ->writePhp('if (', $this->condition, '):')
             ->indent()
-            ->newLine()
             ->subCompile($this->children)
-            ->outdent()
-            ->newLine();
+            ->outdent();
 
         if ($this->nextNode) {
             $compiler->subCompile($this->nextNode);

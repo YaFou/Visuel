@@ -22,9 +22,7 @@ class ElseNode implements NodeInterface
         $compiler
             ->writePhp('else:')
             ->indent()
-            ->newLine()
             ->subCompile($this->children)
-            ->outdent()
-            ->newLine();
+            ->outdent();
     }
 }
